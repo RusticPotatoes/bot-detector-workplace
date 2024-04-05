@@ -15,21 +15,6 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-# setup workspace by cloning down bot-detector repos
-# must have github ssh keys setup, follow instructions here: 
-# https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-clone:
-	git clone git@github.com:Bot-detector/private-api.git
-	git clone git@github.com:Bot-detector/highscore-worker.git
-	git clone git@github.com:Bot-detector/public-api.git
-	git clone git@github.com:Bot-detector/report-worker.git
-	git clone git@github.com:Bot-detector/bot-detector-scraper.git
-	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
-	git clone git@github.com:Bot-detector/bot-detector-mysql.git
-	git clone git@github.com:Bot-detector/AioKafkaEngine.git
-	git clone git@github.com:Bot-detector/bot-detector-ML.git
-	git clone git@github.com:Bot-detector/bdpy-repositories.git
-
 archive: ## archive all bot-detector repos to an archive folder with the file being a datestamp,  create a archive folder if it does not exist, archived files should go here, should remove repo folders after archiving
 	mkdir -p archive
 	tar -czvf ./archive/bot-detector-workplace-$(shell date +'%Y-%m-%d').tar.gz private-api highscore-worker public-api report-worker bot-detector-scraper Bot-Detector-Core-Files bot-detector-mysql AioKafkaEngine bot-detector-ML bdpy-repositories
@@ -75,6 +60,44 @@ setup_extensions:
 	code --install-extension redhat.vscode-yaml
 	code --install-extension svipas.prettier-plus
 
+# setup workspace by cloning down bot-detector repos
+# must have github ssh keys setup, follow instructions here: 
+# https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
+clone:
+	git clone git@github.com:Bot-detector/private-api.git
+	git clone git@github.com:Bot-detector/highscore-worker.git
+	git clone git@github.com:Bot-detector/public-api.git
+	git clone git@github.com:Bot-detector/report-worker.git
+	git clone git@github.com:Bot-detector/bot-detector-scraper.git
+	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
+	git clone git@github.com:Bot-detector/bot-detector-mysql.git
+	git clone git@github.com:Bot-detector/AioKafkaEngine.git
+	git clone git@github.com:Bot-detector/bot-detector-ML.git
+	git clone git@github.com:Bot-detector/bdpy-repositories.git
+
 setup: clone
 
-setup-ml:
+setup_ml:
+	git clone git@github.com:Bot-detector/bot-detector-ML.git
+	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
+	git clone git@github.com:Bot-detector/private-api.git
+	git clone git@github.com:Bot-detector/bot-detector-mysql.git
+
+build_ml:
+	docker-compose -f bot-detector-ML/docker-compose.yml build
+
+up_ml:
+	docker-compose -f bot-detector-ML/docker-compose.yml up -d
+
+down_ml:
+	docker-compose -f bot-detector-ML/docker-compose.yml down
+
+restart_ml:
+	docker-compose -f bot-detector-ML/docker-compose.yml down
+	docker-compose -f bot-detector-ML/docker-compose.yml up --build -d
+
+clean_ml:
+	docker-compose -f bot-detector-ML/docker-compose.yml down --volumes
+
+cleanbuild_ml: clean_ml
+	docker-compose -f bot-detector-ML/docker-compose.yml up --build
