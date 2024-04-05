@@ -108,7 +108,7 @@ stop_all_containers:
 	if [ "`docker ps -q -f status=running | wc -l`" -gt 0 ]; then docker stop $(docker ps -q -f status=running); fi
 
 # remove all containers in docker
-remove_all:
+remove_all_containers:
 	if [ "`docker ps -a -q | wc -l`" -gt 0 ]; then docker rm $(docker ps -a -q); fi
 
 # remove all images in docker
