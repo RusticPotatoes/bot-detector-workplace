@@ -87,10 +87,10 @@ setup_ml: ## setup the repos needed to debug the bot-detector-ML, init the .env 
 build_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml build
 
-up_ml:
+run_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml up -d
 
-down_ml:
+stop_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml down
 
 restart_ml:

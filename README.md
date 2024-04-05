@@ -65,7 +65,37 @@
 
 ## Project Speicific Guideance 
 
-### ML
+### Machine Learning (bot-detector-ML)
+
+#### setup
+```
+make setup_ml
+```
+
+#### build
+```
+make build_ml
+```
+
+#### run
+```
+make run_ml
+```
+
+#### clean
+```
+make clean_ml
+```
+
+#### stop ml
+```
+make stop_ml
+```
+
+#### restart ml
+```
+make restart_ml
+```
 
 ### Hiscore Worker
 
