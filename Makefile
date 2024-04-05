@@ -30,5 +30,26 @@ clone:
 	git clone git@github.com:Bot-detector/bot-detector-ML.git
 	git clone git@github.com:Bot-detector/bdpy-repositories.git
 
-setup: clone 
+export_extensions:
+	code --list-extensions | xargs -L 1 echo code --install-extension
 
+list_extensions:
+	code --list-extensions
+
+setup_extensions:
+	code --install-extension codium.codium
+	code --install-extension cweijan.dbclient-jdbc
+	code --install-extension cweijan.vscode-mysql-client2
+	code --install-extension eamodio.gitlens
+	code --install-extension esbenp.prettier-vscode
+	code --install-extension github.vscode-github-actions
+	code --install-extension ms-azuretools.vscode-docker
+	code --install-extension ms-python.black-formatter
+	code --install-extension ms-python.debugpy
+	code --install-extension ms-python.python
+	code --install-extension ms-python.vscode-pylance
+	code --install-extension oderwat.indent-rainbow
+	code --install-extension redhat.vscode-yaml
+	code --install-extension svipas.prettier-plus
+
+setup: clone

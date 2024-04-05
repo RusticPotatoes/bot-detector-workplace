@@ -4,5 +4,27 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.tabSize": 4,
+		"editor.formatOnSave": true,
+	},
+	"extensions": {
+		"recommendations": [
+			"cweijan.dbclient-jdbc",
+			"cweijan.vscode-mysql-client2",
+			"eamodio.gitlens",
+			"esbenp.prettier-vscode",
+			"github.vscode-github-actions",
+			"mhutchie.git-graph",
+			"ms-azuretools.vscode-docker",
+			"charliermarsh.ruff",
+			"ms-python.debugpy",
+			"ms-python.python",
+			"ms-python.vscode-pylance",
+			"nickmillerdev.pytest-fixtures",
+			"oderwat.indent-rainbow",
+			"redhat.vscode-yaml",
+			"svipas.prettier-plus"
+		]
+	}
 }
