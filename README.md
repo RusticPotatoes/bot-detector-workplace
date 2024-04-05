@@ -21,9 +21,21 @@
     choco install make
     ```
 
+3. *If needed, install VSCode
+
+    ```powershell
+    choco install vscode
+    ```
+
 3. Relaunch your terminal and run make setup.  Ensure you are in the root of the project, where the MAKEFILE exists.
     ```powershell
     make setup
+    ```
+
+4. (Optional) Install Reccomended Extensions
+
+    ```powershell
+    make setup_extensions
     ```
 
 ## Project Speicific Guideance 
