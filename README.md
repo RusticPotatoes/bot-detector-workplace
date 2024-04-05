@@ -5,20 +5,38 @@
 
 ## Repos: 
 
+*Note: All make commands need to be ran in the same directory as the Makefile*
 ### MacOS/Linux
-1. Run make setup
+#### general setup
 
+
+
+1. Run make setup
+    
     ```makefile
     make setup
     ```
 
-2. (Optional) Install Reccomended Extensions
+#### vscode and extensions setup
+
+2. Install homebrew package manager: https://brew.sh
+
+3. Relaunch your terminal and if needed, install VSCode and VSCode CLI. 
+    
+    *Note: you don't need to be admin*
+    ```terminal
+    brew install vscode
+    brew install code-cli
+    ```
+4. Install Reccomended Extensions
 
     ```terminal
     make setup_extensions
     ```
 
 ### Windows:
+
+#### general setup
 1. Install Chocolately Package Manager: https://chocolatey.org/install#individual
 
 2. Intall Make through chocolately
@@ -26,18 +44,20 @@
     choco install make
     ```
 
+#### vscode and extensions setup
 3. *If needed, install VSCode
 
     ```powershell
     choco install vscode
     ```
 
-3. Relaunch your terminal and run make setup.  Ensure you are in the root of the project, where the MAKEFILE exists.
+3. Relaunch your terminal and run make setup.  
+
     ```powershell
     make setup
     ```
 
-4. (Optional) Install Reccomended Extensions
+4. Install Reccomended Extensions
 
     ```powershell
     make setup_extensions
