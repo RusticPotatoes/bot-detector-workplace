@@ -171,3 +171,5 @@ private-api/
 public-api/
 report-worker/
 archive/
+
+.DS_Store
