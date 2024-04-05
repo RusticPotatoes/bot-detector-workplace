@@ -12,6 +12,11 @@
     make setup
     ```
 
+2. (Optional) Install Reccomended Extensions
+
+    ```terminal
+    make setup_extensions
+    ```
 
 ### Windows:
 1. Install Chocolately Package Manager: https://chocolatey.org/install#individual

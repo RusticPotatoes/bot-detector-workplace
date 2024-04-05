@@ -1,0 +1,115 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	// bot-detector-ML tasks
+		// docker compose
+		{
+			"type": "docker-compose",
+			"label": "ML docker-compose up",
+			"dockerCompose": {
+				"up": {
+					"detached": false,
+					"build": true
+				},
+				"files": [
+					"${workspaceFolder}/bot-detector-ML/docker-compose.yml"
+				]
+			}
+		},
+		// build docker image
+		{
+			"type":"docker-build",
+			"label": "ML docker-build",
+			"dockerBuild": {
+				"context": "${workspaceFolder}",
+				"dockerfile": "${workspaceFolder}/bot-detector-ML/Dockerfile",
+				"tag": "bd-ml:latest"
+			}
+		},
+		// run docker image
+		{
+			"type": "docker-run",
+			"label": "ML docker-run",
+			"dependsOn":["docker-build"],
+			"dockerRun": {
+				"containerName": "bd-ml",
+				"image": "bd-ml:latest",
+				"env": {
+				},
+				"volumes": [{
+					"containerPath": "/project/api",
+					"localPath": "./api"
+				}],
+				"ports": [{
+					"containerPort": 8000,
+					"hostPort": 8000
+				}]
+			},
+			// the command docker-run has to send
+			"python": {
+				"args": ["api.app:app","--host=0.0.0.0","--port=8000"],
+				"module": "uvicorn"
+			},
+		},
+		{
+			"type": "shell",
+			"label": "ML docker-clean-run",
+			"dependsOn":["docker-run"],
+			"command":["docker", "system", "prune","-a", "-f"]
+		},
+	// bot-detector-scraper tasks
+		// docker compose
+		{
+			"type": "docker-compose",
+			"label": "scraper docker-compose up",
+			"dockerCompose": {
+				"up": {
+					"detached": false,
+					"build": true
+				},
+				"files": [
+					"${workspaceFolder}/bot-detector-scraper/docker-compose.yml"
+				]
+			}
+		},
+		// build docker image
+		{
+			"type": "docker-build",
+			"label": "scraper docker-build",
+			"dockerBuild": {
+				"context": "${workspaceFolder}",
+				"dockerfile": "${workspaceFolder}/bot-detector-scraper/Dockerfile",
+				"tag": "bd-scraper:latest"
+			}
+		},
+		// run docker image
+		{
+			"type": "docker-run",
+			"label": "scraper docker-run",
+			"dependsOn": [
+				"docker-build"
+			],
+			"dockerRun": {
+				"containerName": "bd-scraper",
+				"image": "bd-scraper:latest",
+			},
+			// the command docker-run has to send
+			"python": {
+				"file": "./src/scraper.py"
+			}
+		},
+	// hiscore-worker tasks
+		{
+			"type": "shell",
+			"label": "hiscore compose-up",
+			"command": "docker-compose down --volumes && docker-compose up --build -d",
+			"isBackground": true,
+		},
+		{
+			"type": "shell",
+			"label": "hiscore compose-up-dev",
+			"command": "docker-compose -f docker-compose-dev.yml down --volumes && docker-compose -f docker-compose-dev.yml up --build -d",
+			"isBackground": true,
+		}
+	]
+}
