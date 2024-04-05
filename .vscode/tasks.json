@@ -21,7 +21,7 @@
 			"type":"docker-build",
 			"label": "ML docker-build",
 			"dockerBuild": {
-				"context": "${workspaceFolder}",
+				"context": "${workspaceFolder}/bot-detector-ML",
 				"dockerfile": "${workspaceFolder}/bot-detector-ML/Dockerfile",
 				"tag": "bd-ml:latest"
 			}
@@ -87,7 +87,7 @@
 			"type": "docker-run",
 			"label": "scraper docker-run",
 			"dependsOn": [
-				"docker-build"
+				"scraper docker-build"
 			],
 			"dockerRun": {
 				"containerName": "bd-scraper",
