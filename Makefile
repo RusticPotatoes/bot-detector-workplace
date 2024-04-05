@@ -30,6 +30,10 @@ clone:
 	git clone git@github.com:Bot-detector/bot-detector-ML.git
 	git clone git@github.com:Bot-detector/bdpy-repositories.git
 
+archive_workplace: ## archive all bot-detector repos to an archive folder with the file being a datestamp,  create a archive folder if it does not exist, archived files should go here
+	mkdir -p archive
+	tar -czvf ./archive/bot-detector-workplace-$(shell date +'%Y-%m-%d').tar.gz private-api highscore-worker public-api report-worker bot-detector-scraper Bot-Detector-Core-Files bot-detector-mysql AioKafkaEngine bot-detector-ML bdpy-repositories
+
 export_extensions:
 	code --list-extensions | xargs -L 1 echo code --install-extension
 
@@ -53,3 +57,5 @@ setup_extensions:
 	code --install-extension svipas.prettier-plus
 
 setup: clone
+
+setup-ml:
