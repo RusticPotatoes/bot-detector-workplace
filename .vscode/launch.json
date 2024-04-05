@@ -208,6 +208,23 @@
             "jinja": true,
             "justMyCode": true,
             "cwd": "${workspaceFolder}/private-api/"
-        }
+        },
+    // public-api
+        {
+            "name": "Public FastAPI",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "src.core.server:app",
+                "--reload",
+                "--port", "5000"
+            ],
+            "jinja": true,
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/public-api/"
+        },
+    // report-worker
+        // none
     ]
 }
