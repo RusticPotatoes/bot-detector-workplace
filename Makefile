@@ -82,7 +82,7 @@ setup_ml: ## setup the repos needed to debug the bot-detector-ML, init the .env 
 	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
 	git clone git@github.com:Bot-detector/private-api.git
 	git clone git@github.com:Bot-detector/bot-detector-mysql.git
-# cp bot-detector-ML/.env-example bot-detector-ML/.env
+	cp bot-detector-ML/.env-example bot-detector-ML/.env
 
 build_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml build
