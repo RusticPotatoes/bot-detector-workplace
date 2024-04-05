@@ -62,40 +62,61 @@
     ```powershell
     make setup_extensions
     ```
+## General Commands
+
+- ### stop all containers
+    ```bash
+    make stop_all_containers
+    ```
+- ### remove all containers
+    ```bash
+    make remove_all_containers
+    ```
+- ### remove all images
+    ```bash
+    make remove_all_images
+    ```
+- ### remove all volumes
+    ```bash
+    make remove_all_volumes
+    ```
+- ### remove all networks
+    ```bash
+    make remove_all_networks
+    ```
+- ### clean everything
+    ```bash
+    make clean_all
+    ```
 
 ## Project Speicific Guideance 
 
 ### Machine Learning (bot-detector-ML)
 
-#### setup
-```
-make setup_ml
-```
-
-#### build
-```
-make build_ml
-```
-
-#### run
-```
-make run_ml
-```
-
-#### clean
-```
-make clean_ml
-```
-
-#### stop ml
-```
-make stop_ml
-```
-
-#### restart ml
-```
-make restart_ml
-```
+- #### setup
+    ```bash
+    make setup_ml
+    ```
+- #### build
+    ```bash
+    make build_ml
+    ```
+- #### run
+    ```bash
+    make run_ml
+    ```
+- #### clean
+    ```bash
+    make clean_ml
+    ```
+- #### stop ml
+    ```bash
+    make stop_ml
+    ```
+- #### restart ml
+    ```bash
+    make restart_ml
+    ```
 
 ### Hiscore Worker
 

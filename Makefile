@@ -102,3 +102,26 @@ clean_ml:
 
 cleanbuild_ml: clean_ml
 	docker-compose -f bot-detector-ML/docker-compose.yml up --build
+
+# stop all containers in docker running
+stop_all_containers:
+	if [ "`docker ps -q -f status=running | wc -l`" -gt 0 ]; then docker stop $(docker ps -q -f status=running); fi
+
+# remove all containers in docker
+remove_all:
+	if [ "`docker ps -a -q | wc -l`" -gt 0 ]; then docker rm $(docker ps -a -q); fi
+
+# remove all images in docker
+remove_all_images:
+	if [ "`docker images -q | wc -l`" -gt 0 ]; then docker rmi $(docker images -q); fi
+
+# remove all volumes in docker
+remove_all_volumes:
+	if [ "`docker volume ls -q | wc -l`" -gt 0 ]; then docker volume rm $(docker volume ls -q); fi
+
+# remove all networks in docker
+remove_all_networks:
+	if [ "`docker network ls -q | wc -l`" -gt 0 ]; then docker network rm $(docker network ls -q); fi
+
+# remove all containers, images, volumes, and networks in docker
+clean_all: stop_all remove_all remove_all_images remove_all_volumes remove_all_networks
