@@ -109,19 +109,19 @@ stop_all_containers:
 
 # remove all containers in docker
 remove_all_containers:
-	if [ "`docker ps -a -q | wc -l`" -gt 0 ]; then docker rm $(docker ps -a -q); fi
+	if [ "`docker ps -a -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rm `docker ps -a -q`; fi
 
 # remove all images in docker
 remove_all_images:
-	if [ "`docker images -q | wc -l`" -gt 0 ]; then docker rmi $(docker images -q); fi
+	if [ "`docker images -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rmi `docker images -q`; fi
 
 # remove all volumes in docker
 remove_all_volumes:
-	if [ "`docker volume ls -q | wc -l`" -gt 0 ]; then docker volume rm $(docker volume ls -q); fi
+	if [ "`docker volume ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker volume rm `docker volume ls -q`; fi
 
 # remove all networks in docker
 remove_all_networks:
-	if [ "`docker network ls -q | wc -l`" -gt 0 ]; then docker network rm $(docker network ls -q); fi
+	if [ "`docker network ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker network rm `docker network ls -q`; fi
 
 # remove all containers, images, volumes, and networks in docker
 clean_all: stop_all remove_all remove_all_images remove_all_volumes remove_all_networks
