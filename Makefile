@@ -63,7 +63,7 @@ setup_extensions:
 # setup workspace by cloning down bot-detector repos
 # must have github ssh keys setup, follow instructions here: 
 # https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-clone:
+clone_all:
 	git clone git@github.com:Bot-detector/private-api.git
 	git clone git@github.com:Bot-detector/highscore-worker.git
 	git clone git@github.com:Bot-detector/public-api.git
@@ -75,102 +75,127 @@ clone:
 	git clone git@github.com:Bot-detector/bot-detector-ML.git
 	git clone git@github.com:Bot-detector/bdpy-repositories.git
 
-setup: clone
-
-setup_ml: ## setup the repos needed to debug the bot-detector-ML, init the .env file from the .env.example file
+clone_ml:
 	git clone git@github.com:Bot-detector/bot-detector-ML.git
+
+clone_core:
 	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
+
+clone_private:
 	git clone git@github.com:Bot-detector/private-api.git
+
+clone_hiscore:
+	git clone git@github.com:Bot-detector/highscore-worker.git
+
+clone_public:
+	git clone git@github.com:Bot-detector/public-api.git
+
+clone_report:
+	git clone git@github.com:Bot-detector/report-worker.git
+
+clone_scraper:
+	git clone git@github.com:Bot-detector/bot-detector-scraper.git
+
+clone_kafka:
+	git clone git@github.com:Bot-detector/AioKafkaEngine.git
+
+clone_sql:
 	git clone git@github.com:Bot-detector/bot-detector-mysql.git
-	cp bot-detector-ML/.env-example bot-detector-ML/.env
+
+clone_bdpy:
+	git clone git@github.com:Bot-detector/bdpy-repositories.git
+
+clone_all_repos: clone_ml clone_core clone_private clone_hiscore clone_public clone_report clone_scraper clone_kafka clone_sql clone_bdpy
+
+setup: clone_all_repos
 
 # build docker containers
 build_sql:
-	docker-compose -f bot-detector-mysql/docker-compose.yml build
-
-build_core:
-	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml build
-
-build_private:
-	docker-compose -f private-api/docker-compose.yml build
-
-build_hiscore:
-	docker-compose -f highscore-worker/docker-compose.yml build
-
-build_public:
-	docker-compose -f public-api/docker-compose.yml build
-
-build_report:
-	docker-compose -f report-worker/docker-compose.yml build
-
-build_scraper:
-	docker-compose -f bot-detector-scraper/docker-compose.yml build
+	docker-compose -f bot-detector-mysql/docker-compose-standalone.yml build
 
 build_kafka:
-	docker-compose -f AioKafkaEngine/docker-compose.yml build
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml build
+
+build_private:
+	docker-compose -f private-api/docker-compose-standalone.yml build
+
+build_scraper:
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-scraper/docker-compose-standalone.yml build
+
+build_report:
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f report-worker/docker-compose-standalone.yml build
+
+build_public: ## todo-test after ml work
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f public-api/docker-compose-standalone.yml build
+
+build_hiscore:
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f highscore-worker/docker-compose-standalone.yml build
+
+build_core:
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml build
 
 build_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml build
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml  -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml -f bot-detector-ML/docker-compose-standalone.yml build
 
 build_all: build_sql build_core build_private build_hiscore build_public build_report build_scraper build_kafka build_ml
 
 # run docker containers
 run_sql:
-	docker-compose -f bot-detector-mysql/docker-compose.yml up -d
+	docker-compose -f bot-detector-mysql/docker-compose-standalone.yml up -d
 
 run_core:
-	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml up -d
+	docker-compose -f Bot-Detector-Core-Files/docker-compose-standalone.yml up -d
 
 run_private:
-	docker-compose -f private-api/docker-compose.yml up -d
+	docker-compose -f private-api/docker-compose-standalone.yml up -d
 
 run_hiscore:
-	docker-compose -f highscore-worker/docker-compose.yml up -d
+	docker-compose -f highscore-worker/docker-compose-standalone.yml up -d
 
 run_public:
-	docker-compose -f public-api/docker-compose.yml up -d
+	docker-compose -f public-api/docker-compose-standalone.yml up -d
 
 run_report:
-	docker-compose -f report-worker/docker-compose.yml up -d
+	docker-compose -f report-worker/docker-compose-standalone.yml up -d
 
 run_scraper:
-	docker-compose -f bot-detector-scraper/docker-compose.yml up -d
+	docker-compose -f bot-detector-scraper/docker-compose-standalone.yml up -d
 
 run_kafka:
-	docker-compose -f AioKafkaEngine/docker-compose.yml up -d
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml up -d
 
 run_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml up -d
+	docker-compose -f bot-detector-ML/docker-compose-standalone.yml up -d
 
 run_all: run_sql run_core run_private run_hiscore run_public run_report run_scraper run_kafka run_ml
 
 # stop docker containers
 stop_sql:
-	docker-compose -f bot-detector-mysql/docker-compose.yml down
+	docker-compose -f bot-detector-mysql/docker-compose-standalone.yml down
 
 stop_core:
-	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml down
+	docker-compose -f Bot-Detector-Core-Files/docker-compose-standalone.yml down
 
 stop_private:
-	docker-compose -f private-api/docker-compose.yml down
+	docker-compose -f private-api/docker-compose-standalone.yml down
 
 stop_hiscore:
-	docker-compose -f highscore-worker/docker-compose.yml down
+	docker-compose -f highscore-worker/docker-compose-standalone.yml down
 
 stop_public:
-	docker-compose -f public-api/docker-compose.yml down
+	docker-compose -f public-api/docker-compose-standalone.yml down
 
 stop_report:
-	docker-compose -f report-worker/docker-compose.yml down
+	docker-compose -f report-worker/docker-compose-standalone.yml down
 
 stop_scraper:
-	docker-compose -f bot-detector-scraper/docker-compose.yml down
+	docker-compose -f bot-detector-scraper/docker-compose-standalone.yml down
 
 stop_kafka:
-	docker-compose -f AioKafkaEngine/docker-compose.yml down
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml down
 
 stop_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml down
+	docker-compose -f bot-detector-ML/docker-compose-standalone.yml down
 
 stop_all: stop_sql stop_core stop_private stop_hiscore stop_public stop_report stop_scraper stop_kafka stop_ml
 
@@ -197,31 +222,31 @@ restart_all: restart_sql restart_core restart_private restart_hiscore restart_pu
 
 # clean docker containers
 clean_sql:
-	docker-compose -f bot-detector-mysql/docker-compose.yml down --volumes
+	docker-compose -f bot-detector-mysql/docker-compose-standalone.yml down --volumes
 
 clean_core:
-	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml down --volumes
+	docker-compose -f Bot-Detector-Core-Files/docker-compose-standalone.yml down --volumes
 
 clean_private:
-	docker-compose -f private-api/docker-compose.yml down --volumes
+	docker-compose -f private-api/docker-compose-standalone.yml down --volumes
 
 clean_hiscore:
-	docker-compose -f highscore-worker/docker-compose.yml down --volumes
+	docker-compose -f highscore-worker/docker-compose-standalone.yml down --volumes
 
 clean_public:
-	docker-compose -f public-api/docker-compose.yml down --volumes
+	docker-compose -f public-api/docker-compose-standalone.yml down --volumes
 
 clean_report:
-	docker-compose -f report-worker/docker-compose.yml down --volumes
+	docker-compose -f report-worker/docker-compose-standalone.yml down --volumes
 
 clean_scraper:
-	docker-compose -f bot-detector-scraper/docker-compose.yml down --volumes
+	docker-compose -f bot-detector-scraper/docker-compose-standalone.yml down --volumes
 
 clean_kafka:
-	docker-compose -f AioKafkaEngine/docker-compose.yml down --volumes
+	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml down --volumes
 
 clean_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml down --volumes
+	docker-compose -f bot-detector-ML/docker-compose-standalone.yml down --volumes
 
 clean_all: clean_sql clean_core clean_private clean_hiscore clean_public clean_report clean_scraper clean_kafka clean_ml
 
@@ -289,3 +314,24 @@ remove_all_networks:
 
 # remove all containers, images, volumes, and networks in docker
 reset_all: stop_all_containers remove_all_containers remove_all_images remove_all_volumes remove_all_networks
+
+clone_ml_dependents:
+	-clone_core
+	-clone_hiscore
+	-clone_scraper
+	-clone_private
+	-clone_sql
+	-clone_public
+	-clone_kafka
+
+build_ml_dependents:
+	build_sql
+	build_core
+	build_hiscore
+	build_scraper
+	build_private
+	build_public
+	build_kafka
+
+setup_ml: clone_ml_dependents ## setup the repos needed to debug the bot-detector-ML, init the .env file from the .env.example file
+# cp bot-detector-ML/.env-example bot-detector-ML/.env
