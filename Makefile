@@ -84,24 +84,179 @@ setup_ml: ## setup the repos needed to debug the bot-detector-ML, init the .env 
 	git clone git@github.com:Bot-detector/bot-detector-mysql.git
 	cp bot-detector-ML/.env-example bot-detector-ML/.env
 
+# build docker containers
+build_sql:
+	docker-compose -f bot-detector-mysql/docker-compose.yml build
+
+build_core:
+	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml build
+
+build_private:
+	docker-compose -f private-api/docker-compose.yml build
+
+build_hiscore:
+	docker-compose -f highscore-worker/docker-compose.yml build
+
+build_public:
+	docker-compose -f public-api/docker-compose.yml build
+
+build_report:
+	docker-compose -f report-worker/docker-compose.yml build
+
+build_scraper:
+	docker-compose -f bot-detector-scraper/docker-compose.yml build
+
+build_kafka:
+	docker-compose -f AioKafkaEngine/docker-compose.yml build
+
 build_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml build
+
+build_all: build_sql build_core build_private build_hiscore build_public build_report build_scraper build_kafka build_ml
+
+# run docker containers
+run_sql:
+	docker-compose -f bot-detector-mysql/docker-compose.yml up -d
+
+run_core:
+	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml up -d
+
+run_private:
+	docker-compose -f private-api/docker-compose.yml up -d
+
+run_hiscore:
+	docker-compose -f highscore-worker/docker-compose.yml up -d
+
+run_public:
+	docker-compose -f public-api/docker-compose.yml up -d
+
+run_report:
+	docker-compose -f report-worker/docker-compose.yml up -d
+
+run_scraper:
+	docker-compose -f bot-detector-scraper/docker-compose.yml up -d
+
+run_kafka:
+	docker-compose -f AioKafkaEngine/docker-compose.yml up -d
 
 run_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml up -d
 
+run_all: run_sql run_core run_private run_hiscore run_public run_report run_scraper run_kafka run_ml
+
+# stop docker containers
+stop_sql:
+	docker-compose -f bot-detector-mysql/docker-compose.yml down
+
+stop_core:
+	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml down
+
+stop_private:
+	docker-compose -f private-api/docker-compose.yml down
+
+stop_hiscore:
+	docker-compose -f highscore-worker/docker-compose.yml down
+
+stop_public:
+	docker-compose -f public-api/docker-compose.yml down
+
+stop_report:
+	docker-compose -f report-worker/docker-compose.yml down
+
+stop_scraper:
+	docker-compose -f bot-detector-scraper/docker-compose.yml down
+
+stop_kafka:
+	docker-compose -f AioKafkaEngine/docker-compose.yml down
+
 stop_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml down
 
-restart_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml down
-	docker-compose -f bot-detector-ML/docker-compose.yml up --build -d
+stop_all: stop_sql stop_core stop_private stop_hiscore stop_public stop_report stop_scraper stop_kafka stop_ml
+
+# restart docker containers
+restart_sql: stop_sql run_sql
+
+restart_core: stop_core run_core
+
+restart_private: stop_private run_private
+
+restart_hiscore: stop_hiscore run_hiscore
+
+restart_public: stop_public run_public
+
+restart_report: stop_report run_report
+
+restart_scraper: stop_scraper run_scraper
+
+restart_kafka: stop_kafka run_kafka
+
+restart_ml: stop_ml run_ml
+
+restart_all: restart_sql restart_core restart_private restart_hiscore restart_public restart_report restart_scraper restart_kafka
+
+# clean docker containers
+clean_sql:
+	docker-compose -f bot-detector-mysql/docker-compose.yml down --volumes
+
+clean_core:
+	docker-compose -f Bot-Detector-Core-Files/docker-compose.yml down --volumes
+
+clean_private:
+	docker-compose -f private-api/docker-compose.yml down --volumes
+
+clean_hiscore:
+	docker-compose -f highscore-worker/docker-compose.yml down --volumes
+
+clean_public:
+	docker-compose -f public-api/docker-compose.yml down --volumes
+
+clean_report:
+	docker-compose -f report-worker/docker-compose.yml down --volumes
+
+clean_scraper:
+	docker-compose -f bot-detector-scraper/docker-compose.yml down --volumes
+
+clean_kafka:
+	docker-compose -f AioKafkaEngine/docker-compose.yml down --volumes
 
 clean_ml:
 	docker-compose -f bot-detector-ML/docker-compose.yml down --volumes
 
-cleanbuild_ml: clean_ml
-	docker-compose -f bot-detector-ML/docker-compose.yml up --build
+clean_all: clean_sql clean_core clean_private clean_hiscore clean_public clean_report clean_scraper clean_kafka clean_ml
+
+# clean and build docker containers
+cleanbuild_ml: clean_ml build_ml
+
+cleanbuild_sql: clean_sql clean_mysql_mount build_sql
+
+cleanbuild_core: clean_core build_core
+
+cleanbuild_private: clean_private build_private
+
+cleanbuild_hiscore: clean_hiscore build_hiscore
+
+cleanbuild_public: clean_public build_public
+
+cleanbuild_report: clean_report build_report
+
+cleanbuild_scraper: clean_scraper build_scraper
+
+cleanbuild_kafka: clean_kafka build_kafka
+
+cleanbuild_all: clean_all build_all
+
+# stop, clean, build, and run docker containers
+rerun_ml: cleanbuild_ml run_ml
+
+rerun_sql: cleanbuild_sql run_sql
+
+rerun_core: cleanbuild_core run_core
+
+rerun_all: cleanbuild_all run_all
+
+clean_mysql_mount:
+	rm -rf ../bot-detector-mysql/mount
 
 ## enter venv
 enter_venv:
@@ -114,25 +269,23 @@ requirements: ## in venv install requirements
 
 # stop all containers in docker running
 stop_all_containers:
-	if [ "`docker ps -q -f status=running | wc -l`" -gt 0 ]; then docker stop $(docker ps -q -f status=running); fi
+	-if [ "`docker ps -q -f status=running | wc -l`" -gt 0 ]; then docker stop $(docker ps -q -f status=running); fi
 
 # remove all containers in docker
 remove_all_containers:
-	if [ "`docker ps -a -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rm `docker ps -a -q`; fi
+	-if [ "`docker ps -a -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rm `docker ps -a -q`; fi
 
 # remove all images in docker
 remove_all_images:
-	if [ "`docker images -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rmi `docker images -q`; fi
+	-if [ "`docker images -q | wc -l | tr -d ' '`" -gt 0 ]; then docker rmi `docker images -q`; fi
 
 # remove all volumes in docker
 remove_all_volumes:
-	if [ "`docker volume ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker volume rm `docker volume ls -q`; fi
+	-if [ "`docker volume ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker volume rm `docker volume ls -q`; fi
 
 # remove all networks in docker
 remove_all_networks:
-	if [ "`docker network ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker network rm `docker network ls -q`; fi
+	-if [ "`docker network ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker network rm `docker network ls -q`; fi
 
 # remove all containers, images, volumes, and networks in docker
-clean_all: stop_all_containers remove_all_containers remove_all_images remove_all_volumes remove_all_networks
-
-rerun_ml: stop_ml clean_ml build_ml run_ml
+reset_all: stop_all_containers remove_all_containers remove_all_images remove_all_volumes remove_all_networks
