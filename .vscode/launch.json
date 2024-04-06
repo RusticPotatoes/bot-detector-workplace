@@ -7,7 +7,7 @@
     // AioKafkaEngine actions, general python debug
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
@@ -16,7 +16,7 @@
     // Bot-Detector-Core-Files actions
         {
             "name": "Core FastAPI",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "args": [
@@ -30,14 +30,15 @@
     // bot-detector-ML actions
         {
             "name": "ML: FastAPI",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "args": [
                 "api.app:app"
             ],
             "jinja": true,
-            "justMyCode": true
+            "justMyCode": true,
+            "cwd": "${workspaceFolder}/bot-detector-ML/"
         },
         // does not have debugger
         {
@@ -52,7 +53,8 @@
                         "remoteRoot": "/app"
                     }
                 ],
-                "projectType":"fastapi"
+                "projectType":"fastapi",
+                // "pythonPath": "${workspaceFolder}/bot-detector-ML/venv/bin/python"
             },
             "dockerServerReadyAction": {
                 "action": "openExternally",
@@ -74,6 +76,7 @@
                         "remoteRoot": "/app"
                     }
                 ],
+                // "pythonPath": "${workspaceFolder}/bot-detector-ML/venv/bin/python"
             },
             "dockerServerReadyAction": {
                 "action": "openExternally",
@@ -94,6 +97,7 @@
                         "remoteRoot": "/app"
                     }
                 ],
+                // "pythonPath": "${workspaceFolder}/bot-detector-ML/venv/bin/python"
             },
             "dockerServerReadyAction": {
                 "action": "openExternally",
@@ -105,7 +109,7 @@
         // debug main scraper file
         {
             "name": "Scraper main debug",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/bot-detector-scraper/src/main.py",
             "console": "integratedTerminal",
@@ -156,7 +160,7 @@
     // hiscore-worker
         {
             "name": "hiscore Remote Attach",
-            "type": "python",
+            "type": "debugpy",
             "request": "attach",
             "connect": {
                 "host": "localhost",
@@ -171,7 +175,7 @@
         },
         {
             "name": "hiscore Compose Up Dev",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/hiscore-worker/src/main.py", // replace with your script
             "console": "integratedTerminal",
@@ -180,7 +184,7 @@
         },
         {
             "name": "hiscore Run Dev",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/hiscore-worker/src/main.py",
             "console": "integratedTerminal",
@@ -197,7 +201,7 @@
     // private-api 
         {
             "name": "private FastAPI",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "args": [
@@ -212,7 +216,7 @@
     // public-api
         {
             "name": "Public FastAPI",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "args": [
