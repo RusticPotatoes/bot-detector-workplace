@@ -120,22 +120,22 @@ build_private:
 	docker-compose -f private-api/docker-compose-standalone.yml build
 
 build_scraper:
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-scraper/docker-compose-standalone.yml build
+	docker-compose -f bot-detector-scraper/docker-compose-kafka.yml -f bot-detector-scraper/docker-compose-standalone.yml build
 
-build_report:
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f report-worker/docker-compose-standalone.yml build
+# build_report: ## kafka base report kafaka setup, then sql setup, then report worker
+# 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f report-worker/docker-compose-kafka.yml -f bot-detector-mysql/docker-compose-standalone.yml -f report-worker/docker-compose-standalone.yml build
 
-build_public: ## todo-test after ml work
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f public-api/docker-compose-standalone.yml build
+# build_public: ## todo-test after ml work
+# 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f public-api/docker-compose-standalone.yml build
 
-build_hiscore:
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f highscore-worker/docker-compose-standalone.yml build
+# build_hiscore:
+# 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f highscore-worker/docker-compose-standalone.yml build
 
-build_core:
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml build
+# build_core:
+# 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml build
 
-build_ml:
-	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml  -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml -f bot-detector-ML/docker-compose-standalone.yml build
+# build_ml:
+# 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml  -f bot-detector-mysql/docker-compose-standalone.yml -f Bot-Detector-Core-Files/docker-compose-standalone.yml -f bot-detector-ML/docker-compose-standalone.yml build
 
 build_all: build_sql build_core build_private build_hiscore build_public build_report build_scraper build_kafka build_ml
 
