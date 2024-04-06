@@ -134,3 +134,5 @@ remove_all_networks:
 
 # remove all containers, images, volumes, and networks in docker
 clean_all: stop_all_containers remove_all_containers remove_all_images remove_all_volumes remove_all_networks
+
+rerun_ml: stop_ml clean_ml build_ml run_ml
