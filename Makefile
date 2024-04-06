@@ -103,6 +103,15 @@ clean_ml:
 cleanbuild_ml: clean_ml
 	docker-compose -f bot-detector-ML/docker-compose.yml up --build
 
+## enter venv
+enter_venv:
+	. venv/bin/activate
+
+requirements: ## in venv install requirements
+	source venv/bin/activate && \
+	python3 -m pip install setuptools && \
+	find . -name 'requirements.txt' -exec python3 -m pip install -r {} \;
+
 # stop all containers in docker running
 stop_all_containers:
 	if [ "`docker ps -q -f status=running | wc -l`" -gt 0 ]; then docker stop $(docker ps -q -f status=running); fi
@@ -124,4 +133,4 @@ remove_all_networks:
 	if [ "`docker network ls -q | wc -l | tr -d ' '`" -gt 0 ]; then docker network rm `docker network ls -q`; fi
 
 # remove all containers, images, volumes, and networks in docker
-clean_all: stop_all remove_all remove_all_images remove_all_volumes remove_all_networks
+clean_all: stop_all_containers remove_all_containers remove_all_images remove_all_volumes remove_all_networks
