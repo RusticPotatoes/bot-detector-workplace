@@ -167,7 +167,7 @@ run_kafka:
 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml up -d
 
 run_ml:
-	docker-compose -f bot-detector-ML/docker-compose.yml up -d
+	docker-compose -f bot-detector-ML/docker-compose.yml up
 
 run_all: run_sql run_core run_private run_hiscore run_public run_report run_scraper run_kafka run_ml
 
@@ -197,7 +197,7 @@ stop_kafka:
 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml down
 
 stop_ml:
-	docker-compose -f bot-detector-ML/docker-compose-standalone.yml down
+	docker-compose -f bot-detector-ML/docker-compose.yml down
 
 stop_all: stop_sql stop_core stop_private stop_hiscore stop_public stop_report stop_scraper stop_kafka stop_ml
 
@@ -248,7 +248,7 @@ clean_kafka:
 	docker-compose -f AioKafkaEngine/docker-compose-standalone.yml down --volumes
 
 clean_ml:
-	docker-compose -f bot-detector-ML/docker-compose-standalone.yml down --volumes
+	docker-compose -f bot-detector-ML/docker-compose.yml down --volumes
 
 clean_all: clean_sql clean_core clean_private clean_hiscore clean_public clean_report clean_scraper clean_kafka clean_ml
 
