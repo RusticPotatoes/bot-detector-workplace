@@ -64,46 +64,46 @@ setup_extensions:
 # must have github ssh keys setup, follow instructions here: 
 # https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
 clone_all:
-	git clone git@github.com:Bot-detector/private-api.git
-	git clone git@github.com:Bot-detector/highscore-worker.git
-	git clone git@github.com:Bot-detector/public-api.git
-	git clone git@github.com:Bot-detector/report-worker.git
-	git clone git@github.com:Bot-detector/bot-detector-scraper.git
-	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
-	git clone git@github.com:Bot-detector/bot-detector-mysql.git
-	git clone git@github.com:Bot-detector/AioKafkaEngine.git
-	git clone git@github.com:Bot-detector/bot-detector-ML.git
-	git clone git@github.com:Bot-detector/bdpy-repositories.git
+	git clone git@github.com:RusticPotatoes/private-api.git
+	git clone git@github.com:RusticPotatoes/highscore-worker.git
+	git clone git@github.com:RusticPotatoes/public-api.git
+	git clone git@github.com:RusticPotatoes/report-worker.git
+	git clone git@github.com:RusticPotatoes/bot-detector-scraper.git
+	git clone git@github.com:RusticPotatoes/Bot-Detector-Core-Files.git
+	git clone git@github.com:RusticPotatoes/bot-detector-mysql.git
+	git clone git@github.com:RusticPotatoes/AioKafkaEngine.git
+	git clone git@github.com:RusticPotatoes/bot-detector-ML.git
+	git clone git@github.com:RusticPotatoes/bdpy-repositories.git
 
 clone_ml:
-	git clone git@github.com:Bot-detector/bot-detector-ML.git
+	git clone git@github.com:RusticPotatoes/bot-detector-ML.git
 
 clone_core:
-	git clone git@github.com:Bot-detector/Bot-Detector-Core-Files.git
+	git clone git@github.com:RusticPotatoes/Bot-Detector-Core-Files.git
 
 clone_private:
-	git clone git@github.com:Bot-detector/private-api.git
+	git clone git@github.com:RusticPotatoes/private-api.git
 
 clone_hiscore:
-	git clone git@github.com:Bot-detector/highscore-worker.git
+	git clone git@github.com:RusticPotatoes/highscore-worker.git
 
 clone_public:
-	git clone git@github.com:Bot-detector/public-api.git
+	git clone git@github.com:RusticPotatoes/public-api.git
 
 clone_report:
-	git clone git@github.com:Bot-detector/report-worker.git
+	git clone git@github.com:RusticPotatoes/report-worker.git
 
 clone_scraper:
-	git clone git@github.com:Bot-detector/bot-detector-scraper.git
+	git clone git@github.com:RusticPotatoes/bot-detector-scraper.git
 
 clone_kafka:
-	git clone git@github.com:Bot-detector/AioKafkaEngine.git
+	git clone git@github.com:RusticPotatoes/AioKafkaEngine.git
 
 clone_sql:
-	git clone git@github.com:Bot-detector/bot-detector-mysql.git
+	git clone git@github.com:RusticPotatoes/bot-detector-mysql.git
 
 clone_bdpy:
-	git clone git@github.com:Bot-detector/bdpy-repositories.git
+	git clone git@github.com:RusticPotatoes/bdpy-repositories.git
 
 clone_all_repos: clone_ml clone_core clone_private clone_hiscore clone_public clone_report clone_scraper clone_kafka clone_sql clone_bdpy
 
@@ -337,3 +337,40 @@ build_ml_dependents:
 
 setup_ml: clone_ml_dependents ## setup the repos needed to debug the bot-detector-ML, init the .env file from the .env.example file
 # cp bot-detector-ML/.env-example bot-detector-ML/.env
+
+# set upstream for every sub directory to be upstream for the org Bot-detector with the repo being the dir name
+# upstream for example private-api would be Bot-detector/private-api
+set_upstream:
+	cd private-api && git remote add upstream https://github.com/Bot-detector/private-api.git
+	cd highscore-worker && git remote add upstream https://github.com/Bot-detector/highscore-worker.git
+	cd public-api && git remote add upstream https://github.com/Bot-detector/public-api.git
+	cd report-worker && git remote add upstream https://github.com/Bot-detector/report-worker.git
+	cd bot-detector-scraper && git remote add upstream https://github.com/Bot-detector/bot-detector-scraper.git
+	cd Bot-Detector-Core-Files && git remote add upstream https://github.com/Bot-detector/Bot-Detector-Core-Files.git
+	cd bot-detector-mysql && git remote add upstream https://github.com/Bot-detector/bot-detector-mysql.git
+	cd AioKafkaEngine && git remote add upstream https://github.com/Bot-detector/AioKafkaEngine.git
+	cd bot-detector-ML && git remote add upstream https://github.com/Bot-detector/bot-detector-ML.git
+
+# fetch upstream of every sub directory 
+fetch_upstream:
+	cd private-api && git fetch upstream
+	cd highscore-worker && git fetch upstream
+	cd public-api && git fetch upstream
+	cd report-worker && git fetch upstream
+	cd bot-detector-scraper && git fetch upstream
+	cd Bot-Detector-Core-Files && git fetch upstream
+	cd bot-detector-mysql && git fetch upstream
+	cd AioKafkaEngine && git fetch upstream
+	cd bot-detector-ML && git fetch upstream
+
+# sync changes up to remote, 
+merge_and_push_upstream:
+	cd private-api && git fetch upstream && git rebase upstream/develop && git push origin develop
+	cd highscore-worker && git merge upstream/develop && git push origin develop
+	cd public-api && git merge upstream/develop && git push origin develop
+	cd report-worker && git merge upstream/develop && git push origin develop
+	cd bot-detector-scraper && git merge upstream/develop && git push origin develop
+	cd Bot-Detector-Core-Files && git merge upstream/develop && git push origin develop
+	cd bot-detector-mysql && git merge upstream/develop && git push origin develop
+	cd AioKafkaEngine && git merge upstream/develop && git push origin develop
+	cd bot-detector-ML && git merge upstream/develop && git push origin develop
