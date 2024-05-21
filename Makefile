@@ -351,21 +351,60 @@ set_upstream:
 	cd AioKafkaEngine && git remote add upstream https://github.com/Bot-detector/AioKafkaEngine.git
 	cd bot-detector-ML && git remote add upstream https://github.com/Bot-detector/bot-detector-ML.git
 
-# fetch upstream of every sub directory 
+set_upstream_private_api:
+	cd private-api && git remote add upstream https://github.com/Bot-detector/private-api.git
+
+set_upstream_highscore_worker:
+	cd highscore-worker && git remote add upstream https://github.com/Bot-detector/highscore-worker.git
+
+set_upstream_public_api:
+	cd public-api && git remote add upstream https://github.com/Bot-detector/public-api.git
+
+set_upstream_report_worker:
+	cd report-worker && git remote add upstream https://github.com/Bot-detector/report-worker.git
+
+set_upstream_bot_detector_scraper:
+	cd bot-detector-scraper && git remote add upstream https://github.com/Bot-detector/bot-detector-scraper.git
+
+set_upstream_Bot_Detector_Core_Files:
+	cd Bot-Detector-Core-Files && git remote add upstream https://github.com/Bot-detector/Bot-Detector-Core-Files.git
+
+set_upstream_bot_detector_mysql:
+	cd bot-detector-mysql && git remote add upstream https://github.com/Bot-detector/bot-detector-mysql.git
+
+set_upstream_AioKafkaEngine:
+	cd AioKafkaEngine && git remote add upstream https://github.com/Bot-detector/AioKafkaEngine.git
+
+set_upstream_bot_detector_ML:
+	cd bot-detector-ML && git remote add upstream https://github.com/Bot-detector/bot-detector-ML.git
+
+#  git pull --unshallow 
+
 fetch_upstream:
-	cd private-api && git fetch upstream
-	cd highscore-worker && git fetch upstream
-	cd public-api && git fetch upstream
-	cd report-worker && git fetch upstream
-	cd bot-detector-scraper && git fetch upstream
-	cd Bot-Detector-Core-Files && git fetch upstream
-	cd bot-detector-mysql && git fetch upstream
-	cd AioKafkaEngine && git fetch upstream
-	cd bot-detector-ML && git fetch upstream
+	cd private-api &&  git pull --unshallow && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd highscore-worker && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd public-api && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd report-worker && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd bot-detector-scraper && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd Bot-Detector-Core-Files && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd bot-detector-mysql && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd AioKafkaEngine && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+	cd bot-detector-ML && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
+# fetch upstream of every sub directory 
+fetch_upstream_push:
+	cd private-api && git fetch upstream develop:develop && git push origin develop
+	cd highscore-worker && git fetch upstream develop:develop && git push origin develop
+	cd public-api && git fetch upstream develop:develop && git push origin develop
+	cd report-worker && git fetch upstream develop:develop && git push origin develop
+	cd bot-detector-scraper && git fetch upstream develop:develop && git push origin develop
+	cd Bot-Detector-Core-Files && git fetch upstream develop:develop && git push origin develop
+	cd bot-detector-mysql && git fetch upstream develop:develop && git push origin develop
+	cd AioKafkaEngine && git fetch upstream develop:develop && git push origin develop
+	cd bot-detector-ML && git fetch upstream develop:develop && git push origin develop
 
 # sync changes up to remote, 
 merge_and_push_upstream:
-	cd private-api && git fetch upstream && git rebase upstream/develop && git push origin develop
+	cd private-api && git merge upstream/develop && git push origin develop
 	cd highscore-worker && git merge upstream/develop && git push origin develop
 	cd public-api && git merge upstream/develop && git push origin develop
 	cd report-worker && git merge upstream/develop && git push origin develop
