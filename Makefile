@@ -340,118 +340,83 @@ setup_ml: clone_ml_dependents ## setup the repos needed to debug the bot-detecto
 
 # set upstream for every sub directory to be upstream for the org Bot-detector with the repo being the dir name
 # upstream for example private-api would be Bot-detector/private-api
+define set_upstream
+	cd $1 && git remote add upstream https://github.com/Bot-detector/$1.git
+endef
+
 set_upstream:
-	cd private-api && git remote add upstream https://github.com/Bot-detector/private-api.git
-	cd highscore-worker && git remote add upstream https://github.com/Bot-detector/highscore-worker.git
-	cd public-api && git remote add upstream https://github.com/Bot-detector/public-api.git
-	cd report-worker && git remote add upstream https://github.com/Bot-detector/report-worker.git
-	cd bot-detector-scraper && git remote add upstream https://github.com/Bot-detector/bot-detector-scraper.git
-	cd Bot-Detector-Core-Files && git remote add upstream https://github.com/Bot-detector/Bot-Detector-Core-Files.git
-	cd bot-detector-mysql && git remote add upstream https://github.com/Bot-detector/bot-detector-mysql.git
-	cd AioKafkaEngine && git remote add upstream https://github.com/Bot-detector/AioKafkaEngine.git
-	cd bot-detector-ML && git remote add upstream https://github.com/Bot-detector/bot-detector-ML.git
+	$(call set_upstream,private-api)
+	$(call set_upstream,highscore-worker)
+	$(call set_upstream,public-api)
+	$(call set_upstream,report-worker)
+	$(call set_upstream,bot-detector-scraper)
+	$(call set_upstream,Bot-Detector-Core-Files)
+	$(call set_upstream,bot-detector-mysql)
+	$(call set_upstream,AioKafkaEngine)
+	$(call set_upstream,bot-detector-ML)
 
 set_upstream_private_api:
-	cd private-api && git remote add upstream https://github.com/Bot-detector/private-api.git
+	$(call set_upstream,private-api)
 
 set_upstream_highscore_worker:
-	cd highscore-worker && git remote add upstream https://github.com/Bot-detector/highscore-worker.git
+	$(call set_upstream,highscore-worker)
 
 set_upstream_public_api:
-	cd public-api && git remote add upstream https://github.com/Bot-detector/public-api.git
+	$(call set_upstream,public-api)
 
 set_upstream_report_worker:
-	cd report-worker && git remote add upstream https://github.com/Bot-detector/report-worker.git
+	$(call set_upstream,report-worker)
 
 set_upstream_bot_detector_scraper:
-	cd bot-detector-scraper && git remote add upstream https://github.com/Bot-detector/bot-detector-scraper.git
+	$(call set_upstream,bot-detector-scraper)
 
 set_upstream_Bot_Detector_Core_Files:
-	cd Bot-Detector-Core-Files && git remote add upstream https://github.com/Bot-detector/Bot-Detector-Core-Files.git
+	$(call set_upstream,Bot-Detector-Core-Files)
 
 set_upstream_bot_detector_mysql:
-	cd bot-detector-mysql && git remote add upstream https://github.com/Bot-detector/bot-detector-mysql.git
+	$(call set_upstream,bot-detector-mysql)
 
 set_upstream_AioKafkaEngine:
-	cd AioKafkaEngine && git remote add upstream https://github.com/Bot-detector/AioKafkaEngine.git
+	$(call set_upstream,AioKafkaEngine)
 
 set_upstream_bot_detector_ML:
-	cd bot-detector-ML && git remote add upstream https://github.com/Bot-detector/bot-detector-ML.git
-
+	$(call set_upstream,bot-detector-ML)
 #  git pull --unshallow 
+define fetch_upstream
+	git -C $1 stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C $1 fetch upstream
+	git -C $1 checkout develop
+	git -C $1 reset --hard upstream/develop
+	git -C $1 push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C $1 stash pop; fi
+endef
 
 fetch_upstream_bot-detector-mysql:
-	git -C bot-detector-mysql stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C bot-detector-mysql fetch upstream
-	git -C bot-detector-mysql checkout develop
-	git -C bot-detector-mysql reset --hard upstream/develop
-	git -C bot-detector-mysql push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C bot-detector-mysql stash pop; fi
+	$(call fetch_upstream,bot-detector-mysql)
 
 fetch_upstream_private-api:
-	git -C private-api stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C private-api fetch upstream
-	git -C private-api checkout develop
-	git -C private-api reset --hard upstream/develop
-	git -C private-api push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C private-api stash pop; fi
+	$(call fetch_upstream,private-api)
 
 fetch_upstream_highscore-worker:
-	git -C highscore-worker stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C highscore-worker fetch upstream
-	git -C highscore-worker checkout develop
-	git -C highscore-worker reset --hard upstream/develop
-	git -C highscore-worker push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C highscore-worker stash pop; fi
+	$(call fetch_upstream,highscore-worker)
 
-# Repeat for other directories...
 fetch_upstream_public-api:
-	git -C public-api stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C public-api fetch upstream
-	git -C public-api checkout develop
-	git -C public-api reset --hard upstream/develop
-	git -C public-api push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C public-api stash pop; fi
+	$(call fetch_upstream,public-api)
 
 fetch_upstream_report-worker:
-	git -C report-worker stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C report-worker fetch upstream
-	git -C report-worker checkout develop
-	git -C report-worker reset --hard upstream/develop
-	git -C report-worker push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C report-worker stash pop; fi
+	$(call fetch_upstream,report-worker)
 
 fetch_upstream_bot-detector-scraper:
-	git -C bot-detector-scraper stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C bot-detector-scraper fetch upstream
-	git -C bot-detector-scraper checkout develop
-	git -C bot-detector-scraper reset --hard upstream/develop
-	git -C bot-detector-scraper push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C bot-detector-scraper stash pop; fi
+	$(call fetch_upstream,bot-detector-scraper)
 
 fetch_upstream_Bot-Detector-Core-Files:
-	git -C Bot-Detector-Core-Files stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C Bot-Detector-Core-Files fetch upstream
-	git -C Bot-Detector-Core-Files checkout develop
-	git -C Bot-Detector-Core-Files reset --hard upstream/develop
-	git -C Bot-Detector-Core-Files push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C Bot-Detector-Core-Files stash pop; fi
+	$(call fetch_upstream,Bot-Detector-Core-Files)
 
 fetch_upstream_AioKafkaEngine:
-	git -C AioKafkaEngine stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C AioKafkaEngine fetch upstream
-	git -C AioKafkaEngine checkout develop
-	git -C AioKafkaEngine reset --hard upstream/develop
-	git -C AioKafkaEngine push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C AioKafkaEngine stash pop; fi
+	$(call fetch_upstream,AioKafkaEngine)
 
 fetch_upstream_bot-detector-ML:
-	git -C bot-detector-ML stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
-	git -C bot-detector-ML fetch upstream
-	git -C bot-detector-ML checkout develop
-	git -C bot-detector-ML reset --hard upstream/develop
-	git -C bot-detector-ML push origin develop
-	if [ "$$STASHED" = "1" ]; then git -C bot-detector-ML stash pop; fi
+	$(call fetch_upstream,bot-detector-ML)
 
 # fetch upstream for all repos
 fetch_upstream_all: fetch_upstream_private-api fetch_upstream_highscore-worker fetch_upstream_public-api fetch_upstream_report-worker fetch_upstream_bot-detector-scraper fetch_upstream_Bot-Detector-Core-Files fetch_upstream_bot-detector-mysql fetch_upstream_AioKafkaEngine fetch_upstream_bot-detector-ML
