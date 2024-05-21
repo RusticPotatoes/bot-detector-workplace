@@ -380,36 +380,78 @@ set_upstream_bot_detector_ML:
 
 #  git pull --unshallow 
 
-fetch_upstream:
-	cd private-api &&  git pull --unshallow && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd highscore-worker && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd public-api && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd report-worker && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd bot-detector-scraper && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd Bot-Detector-Core-Files && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd bot-detector-mysql && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd AioKafkaEngine && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-	cd bot-detector-ML && git fetch upstream && git checkout develop && git merge upstream/develop && git push origin develop
-# fetch upstream of every sub directory 
-fetch_upstream_push:
-	cd private-api && git fetch upstream develop:develop && git push origin develop
-	cd highscore-worker && git fetch upstream develop:develop && git push origin develop
-	cd public-api && git fetch upstream develop:develop && git push origin develop
-	cd report-worker && git fetch upstream develop:develop && git push origin develop
-	cd bot-detector-scraper && git fetch upstream develop:develop && git push origin develop
-	cd Bot-Detector-Core-Files && git fetch upstream develop:develop && git push origin develop
-	cd bot-detector-mysql && git fetch upstream develop:develop && git push origin develop
-	cd AioKafkaEngine && git fetch upstream develop:develop && git push origin develop
-	cd bot-detector-ML && git fetch upstream develop:develop && git push origin develop
+fetch_upstream_bot-detector-mysql:
+	git -C bot-detector-mysql stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C bot-detector-mysql fetch upstream
+	git -C bot-detector-mysql checkout develop
+	git -C bot-detector-mysql reset --hard upstream/develop
+	git -C bot-detector-mysql push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C bot-detector-mysql stash pop; fi
 
-# sync changes up to remote, 
-merge_and_push_upstream:
-	cd private-api && git merge upstream/develop && git push origin develop
-	cd highscore-worker && git merge upstream/develop && git push origin develop
-	cd public-api && git merge upstream/develop && git push origin develop
-	cd report-worker && git merge upstream/develop && git push origin develop
-	cd bot-detector-scraper && git merge upstream/develop && git push origin develop
-	cd Bot-Detector-Core-Files && git merge upstream/develop && git push origin develop
-	cd bot-detector-mysql && git merge upstream/develop && git push origin develop
-	cd AioKafkaEngine && git merge upstream/develop && git push origin develop
-	cd bot-detector-ML && git merge upstream/develop && git push origin develop
+fetch_upstream_private-api:
+	git -C private-api stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C private-api fetch upstream
+	git -C private-api checkout develop
+	git -C private-api reset --hard upstream/develop
+	git -C private-api push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C private-api stash pop; fi
+
+fetch_upstream_highscore-worker:
+	git -C highscore-worker stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C highscore-worker fetch upstream
+	git -C highscore-worker checkout develop
+	git -C highscore-worker reset --hard upstream/develop
+	git -C highscore-worker push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C highscore-worker stash pop; fi
+
+# Repeat for other directories...
+fetch_upstream_public-api:
+	git -C public-api stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C public-api fetch upstream
+	git -C public-api checkout develop
+	git -C public-api reset --hard upstream/develop
+	git -C public-api push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C public-api stash pop; fi
+
+fetch_upstream_report-worker:
+	git -C report-worker stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C report-worker fetch upstream
+	git -C report-worker checkout develop
+	git -C report-worker reset --hard upstream/develop
+	git -C report-worker push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C report-worker stash pop; fi
+
+fetch_upstream_bot-detector-scraper:
+	git -C bot-detector-scraper stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C bot-detector-scraper fetch upstream
+	git -C bot-detector-scraper checkout develop
+	git -C bot-detector-scraper reset --hard upstream/develop
+	git -C bot-detector-scraper push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C bot-detector-scraper stash pop; fi
+
+fetch_upstream_Bot-Detector-Core-Files:
+	git -C Bot-Detector-Core-Files stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C Bot-Detector-Core-Files fetch upstream
+	git -C Bot-Detector-Core-Files checkout develop
+	git -C Bot-Detector-Core-Files reset --hard upstream/develop
+	git -C Bot-Detector-Core-Files push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C Bot-Detector-Core-Files stash pop; fi
+
+fetch_upstream_AioKafkaEngine:
+	git -C AioKafkaEngine stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C AioKafkaEngine fetch upstream
+	git -C AioKafkaEngine checkout develop
+	git -C AioKafkaEngine reset --hard upstream/develop
+	git -C AioKafkaEngine push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C AioKafkaEngine stash pop; fi
+
+fetch_upstream_bot-detector-ML:
+	git -C bot-detector-ML stash save --include-untracked "Temporary stash before fetch upstream" && STASHED=1 || STASHED=0
+	git -C bot-detector-ML fetch upstream
+	git -C bot-detector-ML checkout develop
+	git -C bot-detector-ML reset --hard upstream/develop
+	git -C bot-detector-ML push origin develop
+	if [ "$$STASHED" = "1" ]; then git -C bot-detector-ML stash pop; fi
+
+# fetch upstream for all repos
+fetch_upstream_all: fetch_upstream_private-api fetch_upstream_highscore-worker fetch_upstream_public-api fetch_upstream_report-worker fetch_upstream_bot-detector-scraper fetch_upstream_Bot-Detector-Core-Files fetch_upstream_bot-detector-mysql fetch_upstream_AioKafkaEngine fetch_upstream_bot-detector-ML
